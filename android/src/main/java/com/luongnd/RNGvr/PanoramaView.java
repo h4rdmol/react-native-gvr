@@ -113,17 +113,20 @@ public class PanoramaView extends RelativeLayout {
                 if (!imageCache.containsKey(imageUrl)) {
                     try {
                         HttpURLConnection connection = (HttpURLConnection) fileInformation[0].first.openConnection();
-                        connection.connect();
-
-                        istr = connection.getInputStream();
-
-                        imageCache.put(imageUrl, decodeSampledBitmap(istr));
+                        if (connection != null)
+                        {
+                            connection.connect();
+                            istr = connection.getInputStream();
+                            imageCache.put(imageUrl, decodeSampledBitmap(istr));
+                        } else {
+                            Log.e(TAG, "Could not load file from web");
+                        }
                     } catch (IOException e) {
                         Log.e(TAG, "Could not load file: " + e);
                         return false;
                     } finally {
                         try {
-                            istr.close();
+                                istr.close();
                         } catch (IOException e) {
                             Log.e(TAG, "Could not close input stream: " + e);
                         }
