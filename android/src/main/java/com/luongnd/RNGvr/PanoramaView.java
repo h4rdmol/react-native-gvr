@@ -118,6 +118,9 @@ public class PanoramaView extends RelativeLayout {
                             connection.connect();
                             istr = connection.getInputStream();
                             imageCache.put(imageUrl, decodeSampledBitmap(istr));
+                            
+                            image = imageCache.get(imageUrl);
+                            panoWidgetView.loadImageFromBitmap(image, panoOptions);
                         } else {
                             Log.e(TAG, "Could not load file from web");
                         }
@@ -132,10 +135,6 @@ public class PanoramaView extends RelativeLayout {
                         }
                     }
                 }
-
-                image = imageCache.get(imageUrl);
-                panoWidgetView.loadImageFromBitmap(image, panoOptions);
-
             } else {
                 File file = new File(imagePath);
                 image = BitmapFactory.decodeFile(file.getAbsolutePath());
